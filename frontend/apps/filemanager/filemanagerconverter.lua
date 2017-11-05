@@ -53,16 +53,20 @@ end
 
 function FileConverter:_mdFileToHtml(file, title)
     local f = io.open(file, "rb")
-    local content = f:read("*all")
-    f:close()
-    local html = self:mdToHtml(content, title)
-    return html
+    if f then
+        local content = f:read("*all")
+        f:close()
+        local html = self:mdToHtml(content, title)
+        return html
+    end
 end
 
 function FileConverter:writeStringToFile(content, file)
     local f = io.open(file, "w")
-    f:write(content)
-    f:close()
+    if f then
+        f:write(content)
+        f:close()
+    end
 end
 
 function FileConverter:isSupported(file)

@@ -83,8 +83,8 @@ function Dbg:v(...)
 end
 
 function Dbg:logEv(ev)
-    local log = ev.type.."|"..ev.code.."|"
-                ..ev.value.."|"..ev.time.sec.."|"..ev.time.usec.."\n"
+    local log = ev.type.."|"..ev.code.."|"..tostring(ev.value).."|"..
+                tostring(ev.time.sec).."|"..tostring(ev.time.usec).."\n"
     if self.ev_log then
         self.ev_log:write(log)
         self.ev_log:flush()

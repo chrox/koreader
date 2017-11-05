@@ -43,10 +43,13 @@ local cache_path = DataStorage:getDataDir() .. "/cache/"
 --]]
 local function getDiskCache()
     local cached = {}
-    for key_md5 in lfs.dir(cache_path) do
-        local file = cache_path..key_md5
-        if lfs.attributes(file, "mode") == "file" then
-            cached[key_md5] = file
+    local ok, iter, dir_obj = pcall(lfs.dir, path)
+    if ok then
+        for key_md5 in iter, dir_obj do
+            local file = cache_path..key_md5
+            if lfs.attributes(file, "mode") == "file" then
+                cached[key_md5] = file
+            end
         end
     end
     return cached

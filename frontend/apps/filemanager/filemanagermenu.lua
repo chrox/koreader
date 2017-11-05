@@ -272,18 +272,20 @@ function FileManagerMenu:setUpdateItemTable()
             self:exitOrRestart()
         end,
     }
-    self.menu_items.exit = {
-        text = _("Exit"),
-        callback = function()
-            self:exitOrRestart()
-        end,
-    }
-    self.menu_items.restart_koreader = {
-        text = _("Restart KOReader"),
-        callback = function()
-            self:exitOrRestart(function() UIManager:restartKOReader() end)
-        end,
-    }
+    if not Device:isAndroid() then
+        self.menu_items.exit = {
+            text = _("Exit"),
+            callback = function()
+                self:exitOrRestart()
+            end,
+        }
+        self.menu_items.restart_koreader = {
+            text = _("Restart KOReader"),
+            callback = function()
+                self:exitOrRestart(function() UIManager:restartKOReader() end)
+            end,
+        }
+    end
 
     local order = require("ui/elements/filemanager_menu_order")
 

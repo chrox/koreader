@@ -413,9 +413,10 @@ function Input:handleTouchEv(ev)
                 self:setMtSlot(MTSlot.slot, "timev", TimeVal:new(ev.time))
             end
             -- feed ev in all slots to state machine
-            local touch_ges = self.gesture_detector:feedEvent(self.MTSlots)
+            local ok, touch_ges = pcall(self.gesture_detector.feedEvent,
+                self.gesture_detector, self.MTSlots)
             self.MTSlots = {}
-            if touch_ges then
+            if ok and touch_ges then
                 self:gestureAdjustHook(touch_ges)
                 return Event:new("Gesture",
                     self.gesture_detector:adjustGesCoordinate(touch_ges)
@@ -626,10 +627,10 @@ function Input:waitEvent(timeout_us)
         if DEBUG.is_on and ev then
             DEBUG:logEv(ev)
             logger.dbg(string.format(
-                "%s event => type: %d, code: %d(%s), value: %d, time: %d.%d",
+                "%s event => type: %d, code: %d(%s), value: %s, time: %s.%s",
                 ev.type == EV_KEY and "key" or "input",
-                ev.type, ev.code, self.event_map[ev.code], ev.value,
-                ev.time.sec, ev.time.usec))
+                ev.type, ev.code, self.event_map[ev.code], tostring(ev.value),
+                tostring(ev.time.sec), tostring(ev.time.usec)))
         end
         self:eventAdjustHook(ev)
         if ev.type == EV_KEY then
